@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movie project</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="nav-container">
+        <img
+          src="./assets/maxresdefault-removebg-preview.png"
+          alt=""
+          class="logo"
+        />
+        <ul class="nav_links">
+          <li class="nav-link"><a href="">Home</a></li>
+          <li class="nav-link about"><a href="" class="about">About</a></li>
+          <li class="nav-link movies"><a href="" class="movies">Movies</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-container">
+        <h1 class="hero-title">New Zealand's favourite movie streaming</h1>
+        <h3 class="hero-subtitle">Find your dream moive</h3>
+        <img src="./assets/vdzx6Yk6Q7k-removebg-preview.png" class="hero-img" alt="">
+      </div>
+    </section>
+
+    <section class="search">
+      <div class="search-container">
+        <input type="text" id="movie-search" placeholder="Search for a movie" />
+        <button id="search-button">Search</button>
+      </div>
+    </section>
+    
+    <section class="results-section hidden">
+      <div class="filter-container">
+        <div class="year-filter">
+          <h4>Filter by year</h4>
+          <div class="dual-slider">
+            <div class="slider-track"></div>
+            <input type="range" min="1900" max="2025" value="1900" class="start-year">
+            <input type="range" min="1900" max="2025" value="2025" class="end-year">
+            <div class="slider-values">
+              <span id="start-year">1900</span>
+              <span id="end-year">2025</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="movie-grid" id="results-container"></div>
+      <div class="pagination">
+        <button id="prev-page" class="page-btn">Previous</button>
+        <span id="page-info">Page 1</span>
+        <button id="next-page" class="page-btn">Next</button>
+      </div>
+    </section>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-copyright">
+                <p>&copy; 2024 Movie Search. All rights reserved.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </footer>
+    <script src="app.js"></script>
+  </body>
+</html>
