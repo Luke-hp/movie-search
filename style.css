@@ -150,7 +150,7 @@ li:hover {
 
 /* Add these new styles */
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .search {
@@ -447,5 +447,37 @@ footer {
   font-size: 14px;
 }
 
+.sort-style {
+  border-radius: 8px;
+  background-color: #000;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.filter-wrapper {
+  display: flex;
+}
 
 
+/* Loading state */
+
+.results-loader-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.dots {
+  font-size: 200px;
+  color: #000;
+  animation: bounce 0.5s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}

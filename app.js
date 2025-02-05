@@ -13,12 +13,19 @@ const resultsSection = document.querySelector('.results-section');
 const prevButton = document.getElementById('prev-page');
 const nextButton = document.getElementById('next-page');
 const pageInfo = document.getElementById('page-info');
+const movieGrid = document.querySelector('.movie-grid')
 
 // Add these at the top with your other variables
+const yearFilter = document.querySelector(".year-filter")
 const startYear = document.querySelector('.start-year');
 const endYear = document.querySelector('.end-year');
 const startYearValue = document.getElementById('start-year');
 const endYearValue = document.getElementById('end-year');
+
+const sortDropdown = document.getElementById('sort-drop');
+
+const loader = document.querySelector('.results-loader-container')
+
 
 searchButton.addEventListener("click", searchMovies);
 
@@ -42,25 +49,45 @@ async function searchMovies() {
     heroSection.classList.add('hidden');
     searchSection.classList.add('active');
     resultsSection.classList.remove('hidden');
+    sortDropdown.classList.add('hidden')
+    yearFilter.classList.add('hidden')
+    movieGrid.classList.add('hidden')
+    loader.classList.remove('hidden')
 
-    const response = await fetch(url);
+    const response = await new Promise((resolve) => {
+      setTimeout(() => {
+        const result = fetch(url)
+        resolve(result)
+      }, 2000);
+    })
+
     const data = await response.json();
     
     // Add console.log to debug API response
     console.log('API Response:', data);
-
+    
     if (data.Response === "True" && data.Search && data.Search.length > 0) {
       currentMovies = data.Search;
       currentPage = 1;
       // Reset year filter to default values
       startYear.value = startYear.min;
       endYear.value = endYear.max;
+      loader.classList.add('hidden')
+      sortDropdown.classList.remove('hidden')
+      yearFilter.classList.remove('hidden')
+      movieGrid.classList.remove('hidden')
       setupYearFilter(); // Reset the slider visual
       displayResults(currentMovies);
     } else {
+      loader.classList.add('hidden')
+      sortDropdown.classList.remove('hidden')
+      yearFilter.classList.remove('hidden')
       let errorMessage = "No movies found.";
       if (data.Error === "Too many results.") {
         errorMessage = `Your search "${searchTerm}" returned too many results. Please try a more specific search term.`;
+        loader.classList.add('hidden')
+        sortDropdown.classList.remove('hidden')
+        yearFilter.classList.remove('hidden')
       }
       resultsContainer.innerHTML = `
         <div class="error-message">
@@ -83,10 +110,22 @@ async function searchMovies() {
 function displayResults(movies) {
   resultsContainer.innerHTML = "";
   
+  // Create a copy of movies array to sort
+  let sortedMovies = [...movies];
+  
+  // Sort movies based on selected option
+  if (sortDropdown.value !== 'none') {
+    sortedMovies.sort((a, b) => {
+      const yearA = parseInt(a.Year);
+      const yearB = parseInt(b.Year);
+      return sortDropdown.value === 'asc' ? yearA - yearB : yearB - yearA;
+    });
+  }
+
   // Calculate pagination
   const startIndex = (currentPage - 1) * moviesPerPage;
   const endIndex = startIndex + moviesPerPage;
-  const moviesToShow = movies.slice(startIndex, endIndex);
+  const moviesToShow = sortedMovies.slice(startIndex, endIndex);
 
   moviesToShow.forEach((movie) => {
     const movieCard = document.createElement("div");
@@ -102,13 +141,12 @@ function displayResults(movies) {
     resultsContainer.appendChild(movieCard);
   });
 
-  // Update pagination controls
-  updatePaginationControls(movies);
+  updatePaginationControls(sortedMovies.length);
 }
 
 // Add new function for pagination controls
-function updatePaginationControls(movies) {
-  const totalPages = Math.ceil(movies.length / moviesPerPage);
+function updatePaginationControls(totalMovies) {
+  const totalPages = Math.ceil(totalMovies / moviesPerPage);
   pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
   prevButton.disabled = currentPage === 1;
   nextButton.disabled = currentPage >= totalPages;
@@ -181,6 +219,12 @@ function setupYearFilter() {
   // Initialize the slider
   updateSlider();
 }
+
+// Add event listener for sort dropdown
+sortDropdown.addEventListener('change', () => {
+  currentPage = 1; // Reset to first page when sorting
+  filterMoviesByYear(); // Reapply filters and sorting
+})
 
 function filterMoviesByYear() {
   if (!currentMovies) return;

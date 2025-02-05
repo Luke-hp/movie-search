@@ -41,8 +41,16 @@
         <button id="search-button">Search</button>
       </div>
     </section>
+
     
     <section class="results-section hidden">
+
+      <div class="results-loader-container hidden">
+        <div class="dots">.</div>
+        <div class="dots">.</div>
+        <div class="dots">.</div>
+      </div>
+
       <div class="filter-container">
         <div class="year-filter">
           <h4>Filter by year</h4>
@@ -55,9 +63,14 @@
               <span id="end-year">2025</span>
             </div>
           </div>
+
+          <select name="" id="sort-drop" class="sort-style">
+            <option value="none">Sort by Year</option>
+            <option value="asc">Year (oldest first)</option>
+            <option value="desc">Year (newest first)</option>
+          </select>
         </div>
-      </div>
-      
+        
       <div class="movie-grid" id="results-container"></div>
       <div class="pagination">
         <button id="prev-page" class="page-btn">Previous</button>
